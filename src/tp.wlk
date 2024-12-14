@@ -95,7 +95,12 @@ class Veterano inherits Mago{
         magoDefensor.energiaMagica(magoDefensor.energiaMagica() - (magoDefensor.energiaMagica()*0.25))
     }
 }
-class Inmortal inherits Mago{}
+class Inmortal inherits Mago{
+    override method cederPuntos(magoDefensor,magoAtacante){}
+    override method esVencido(magoDefensor,magoAtacante){
+        return false
+    }
+}
 
 const magoAprendiz = new Aprendiz(nombre = "pepito", poderInnato = 1, objetosEquipados = [varitaSimpleDePepito], resistenciaMagica = 3, energiaMagica = 6)
 const magoVeterano = new Veterano(nombre = "Gandalf", poderInnato = 8, objetosEquipados = [tunicaEpicaDeGandalf],resistenciaMagica = 10, energiaMagica = 18)
@@ -133,19 +138,29 @@ class Gremio {
     }
 
     method esLider(){
-        return integrantesDelGremio.find({miembro => miembro.poderTotal(miembro).max()})
+        return integrantesDelGremio.filter({miembro => miembro.poderTotal(miembro).max()})
          
     }
     method esVencidoGremio(gremio,adversario){
-        adversario.poderTotal(adversario.nombre()) > integrantesDelGremio.forEach({miembro => miembro.resistenciaMagica()}).sum() + gremio.esLider().poderTotal(adversario)
+       return adversario.poderTotal(adversario.nombre()) > (integrantesDelGremio.forEach({miembro => miembro.resistenciaMagica()}).sum() + gremio.esLider().poderTotal(adversario))
     }
 
     method ganarEnergiaMagica(gremio, adversario){
+        const liderDelGremio = gremio.esLider()
+        if(self.esVencidoGremio(gremio, adversario)){
+        adversario.cederPuntos(adversario, liderDelGremio)
+        }
     }
 
     method desafiar(gremio, adversario){
         self.esVencidoGremio(gremio,adversario)
-        
     }
 }
 
+const gremio1 = new Gremio(poderGremio = 15, energiaMagica = 24 , integrantesDelGremio = [magoAprendiz, magoVeterano])
+const magoInmortal = new Inmortal(nombre = "inmortal", poderInnato = 10, objetosEquipados = [], resistenciaMagica = 1000, energiaMagica = 18)
+
+
+/* gremio.desafiar(gremio1, magoInmortal) */
+
+/* punto 3. Deberia poderse. La manera en la que está modelado para hallar al lider es filtrar por el miembro mas poderoso del gremio, por lo que si hay mas de 1 lider, devuelve todos */
