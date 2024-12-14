@@ -6,9 +6,9 @@ En papel
 
 ## Estudiante
 
-**Nombre y apellido:** -completar acá-
+**Nombre y apellido:** Milagros Aylen Lavoria
 
-**Número de legajo:** -completar acá-
+**Número de legajo:** 213.822-0
 
 ## Que hacer cuando terminan el parcial
 
